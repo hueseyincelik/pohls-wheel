@@ -223,3 +223,6 @@ class GUI:
 
             acquire_thread = Thread(target=self.acquire)
             acquire_thread.start()
+
+    def stop(self, sender, data):
+        self.measure = False
