@@ -17,6 +17,10 @@ class GUI:
 
         dpg.destroy_context()
 
+    def change_item_visibility(self, items, visibility):
+        for item in items:
+            dpg.configure_item(item, show=visibility)
+
     def popup_message(self, label, message):
         with dpg.window(
             label=label,
