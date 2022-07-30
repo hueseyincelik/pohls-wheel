@@ -60,3 +60,14 @@ class GUI:
 		with dpg.window(label=label, modal=True, no_move=True, no_close=True, no_resize=True, min_size=[200, 50], pos=[350, 350]) as popup_window:
 			dpg.add_text(message)
 			dpg.add_button(label='CLOSE', callback=lambda: dpg.delete_item(popup_window))
+			
+	def initialize(self, sender, data):
+		try:
+			self.com_port = dpg.get_value('com_port_input')
+			self.ardn = arduino(f"COM{self.com_port}")
+		except:
+			self.popup_message('Arduino Connection', 'Error connecting to Arduino!\nCheck COM port!')
+			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz'], False)
+		else:
+			self.popup_message('Arduino Connection', 'Successfully connected to Arduino!')
+			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz'], True)
