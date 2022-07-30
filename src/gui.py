@@ -3,6 +3,9 @@ import dearpygui.dearpygui as dpg
 
 class GUI:
     def __init__(self):
+        self.time_data, self.oscillator_data, self.exciter_data = [], [], []
+        self.measure = False
+
         dpg.create_context()
         dpg.create_viewport(
             title="Themenkreis 7", width=1000, height=600, resizable=False
