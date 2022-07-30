@@ -19,10 +19,20 @@ class GUI:
 
 				dpg.add_text('FILE NAME', tag='file_name', pos=[625, 510], show=False)
 				dpg.add_input_text(tag='file_name_input', no_spaces=True, width=260, default_value='data.txt', show=False)
-				
+
 				dpg.add_text('EXCITER FREQUENCY', tag='exciter_frequency', pos=[625, 545], show=False)
 				dpg.add_input_text(tag='exciter_frequency_input', no_spaces=True, decimal=True, width=75, default_value='0', show=False)
 				dpg.add_text('MHz', tag='exciter_frequency_MHz', show=False)
+
+			with dpg.plot(label='Oscillator', height=400, width=475, pos=[25, 25]):
+				dpg.add_plot_axis(dpg.mvXAxis, label='Time t [s]', tag='oscillator_x_axis')
+				dpg.add_plot_axis(dpg.mvYAxis, label=r'Amplitude A [arb. u.]', tag='oscillator_y_axis')
+				dpg.add_line_series(self.time_data, self.oscillator_data, parent='oscillator_y_axis', tag='oscillator_plot')
+
+			with dpg.plot(label='Exciter', height=400, width=475, pos=[500, 25]):
+				dpg.add_plot_axis(dpg.mvXAxis, label='Time t [s]', tag='exciter_x_axis')
+				dpg.add_plot_axis(dpg.mvYAxis, label='Amplitude A [arb. u.]', tag='exciter_y_axis')
+				dpg.add_line_series(self.time_data, self.exciter_data, parent='exciter_y_axis', tag='exciter_plot')
 
 		dpg.set_primary_window('main_window', True)
 		dpg.show_viewport()
