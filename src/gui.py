@@ -65,6 +65,32 @@ class GUI:
                 )
                 dpg.add_text("MHz", tag="exciter_frequency_MHz", show=False)
 
+            with dpg.plot(label="Oscillator", height=400, width=475, pos=[25, 25]):
+                dpg.add_plot_axis(
+                    dpg.mvXAxis, label="Time t [s]", tag="oscillator_x_axis"
+                )
+                dpg.add_plot_axis(
+                    dpg.mvYAxis, label=r"Amplitude A [arb. u.]", tag="oscillator_y_axis"
+                )
+                dpg.add_line_series(
+                    self.time_data,
+                    self.oscillator_data,
+                    parent="oscillator_y_axis",
+                    tag="oscillator_plot",
+                )
+
+            with dpg.plot(label="Exciter", height=400, width=475, pos=[500, 25]):
+                dpg.add_plot_axis(dpg.mvXAxis, label="Time t [s]", tag="exciter_x_axis")
+                dpg.add_plot_axis(
+                    dpg.mvYAxis, label="Amplitude A [arb. u.]", tag="exciter_y_axis"
+                )
+                dpg.add_line_series(
+                    self.time_data,
+                    self.exciter_data,
+                    parent="exciter_y_axis",
+                    tag="exciter_plot",
+                )
+
         dpg.set_primary_window("main_window", True)
         dpg.show_viewport()
 
