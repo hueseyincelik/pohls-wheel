@@ -214,3 +214,12 @@ class GUI:
 
             dpg.fit_axis_data("exciter_x_axis")
             dpg.fit_axis_data("exciter_y_axis")
+
+    def start(self, sender, data):
+        if self.measure:
+            self.measure = False
+        else:
+            self.measure = True
+
+            acquire_thread = Thread(target=self.acquire)
+            acquire_thread.start()
