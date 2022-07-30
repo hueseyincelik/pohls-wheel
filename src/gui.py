@@ -40,6 +40,15 @@ class GUI:
                     default_value="4",
                 )
 
+                dpg.add_text("FILE NAME", tag="file_name", pos=[625, 510], show=False)
+                dpg.add_input_text(
+                    tag="file_name_input",
+                    no_spaces=True,
+                    width=260,
+                    default_value="data.txt",
+                    show=False,
+                )
+
         dpg.set_primary_window("main_window", True)
         dpg.show_viewport()
 
