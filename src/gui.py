@@ -1,4 +1,9 @@
+from time import perf_counter, sleep
+from threading import Thread
+
 import dearpygui.dearpygui as dpg
+from . import arduino
+import numpy as np
 
 class GUI:
 	def __init__(self):
@@ -60,7 +65,7 @@ class GUI:
 		with dpg.window(label=label, modal=True, no_move=True, no_close=True, no_resize=True, min_size=[200, 50], pos=[350, 350]) as popup_window:
 			dpg.add_text(message)
 			dpg.add_button(label='CLOSE', callback=lambda: dpg.delete_item(popup_window))
-			
+
 	def initialize(self, sender, data):
 		try:
 			self.com_port = dpg.get_value('com_port_input')
@@ -71,3 +76,28 @@ class GUI:
 		else:
 			self.popup_message('Arduino Connection', 'Successfully connected to Arduino!')
 			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz'], True)
+
+	def acquire(self):
+		self.time_data, self.oscillator_data, self.exciter_data, self.exciter_frequency = [], [], [], dpg.get_value('exciter_frequency_input')
+
+		# FIGURE OUT HOW TO ACTUALLY WRITE TO ARDUINO
+		# self.ardn.write(exciter_frequency)
+		start = perf_counter()
+
+		while self.measure:
+			sleep(0.01)
+			current = perf_counter()
+
+			self.time_data.append(current-start)
+			# FIGURE OUT HOW TO ACTUALLY READ FROM ARDUINO
+			# self.oscillator_data.append(current-start)
+			# self.exciter_data.append(current-start)
+
+			dpg.set_value('oscillator_plot', [self.time_data, self.oscillator_data])
+			dpg.set_value('exciter_plot', [self.time_data, self.exciter_data])
+
+			dpg.fit_axis_data('oscillator_x_axis')
+			dpg.fit_axis_data('oscillator_y_axis')
+
+			dpg.fit_axis_data('exciter_x_axis')
+			dpg.fit_axis_data('exciter_y_axis')
