@@ -9,6 +9,10 @@ class GUI:
 		dpg.create_viewport(title='Themenkreis 7', width=1000, height=600, resizable=False)
 		dpg.setup_dearpygui()
 
+		with dpg.font_registry():
+			default_font = dpg.add_font('fonts/HelveticaNeue-Regular.otf', 18*4)
+			bold_font = dpg.add_font('fonts/HelveticaNeue-Bold.otf', 18*4)
+
 		with dpg.window(tag='main_window'):
 			for (label, tag, pos, callback, visibility) in zip(['CONNECT', 'START', 'STOP', 'SAVE'], ['connect_button', 'start_button', 'stop_button', 'save_button'], [[25,450], [625,450], [750,450], [875,450]], [self. initialize, self.start, self.stop, self.save], [True, False, False, False]):
 				dpg.add_button(label=label, tag=tag, width=100, height=50, pos=pos, callback=callback, show=visibility)
@@ -33,6 +37,12 @@ class GUI:
 				dpg.add_plot_axis(dpg.mvXAxis, label='Time t [s]', tag='exciter_x_axis')
 				dpg.add_plot_axis(dpg.mvYAxis, label='Amplitude A [arb. u.]', tag='exciter_y_axis')
 				dpg.add_line_series(self.time_data, self.exciter_data, parent='exciter_y_axis', tag='exciter_plot')
+
+			dpg.bind_font(default_font)
+			dpg.set_global_font_scale(0.25)
+
+			for item in ['connect_button', 'start_button', 'stop_button', 'save_button', 'com_text', 'com_port_input', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz']:
+				dpg.bind_item_font(item, bold_font)
 
 		dpg.set_primary_window('main_window', True)
 		dpg.show_viewport()
