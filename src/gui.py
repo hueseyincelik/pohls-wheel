@@ -1,4 +1,10 @@
+from threading import Thread
+from time import perf_counter, sleep
+
 import dearpygui.dearpygui as dpg
+import numpy as np
+
+from . import arduino
 
 
 class GUI:
@@ -178,3 +184,33 @@ class GUI:
                 ],
                 True,
             )
+
+    def acquire(self):
+        (
+            self.time_data,
+            self.oscillator_data,
+            self.exciter_data,
+            self.exciter_frequency,
+        ) = [], [], [], dpg.get_value("exciter_frequency_input")
+
+        # FIGURE OUT HOW TO ACTUALLY WRITE TO ARDUINO
+        # self.ardn.write(exciter_frequency)
+        start = perf_counter()
+
+        while self.measure:
+            sleep(0.01)
+            current = perf_counter()
+
+            self.time_data.append(current - start)
+            # FIGURE OUT HOW TO ACTUALLY READ FROM ARDUINO
+            # self.oscillator_data.append(current-start)
+            # self.exciter_data.append(current-start)
+
+            dpg.set_value("oscillator_plot", [self.time_data, self.oscillator_data])
+            dpg.set_value("exciter_plot", [self.time_data, self.exciter_data])
+
+            dpg.fit_axis_data("oscillator_x_axis")
+            dpg.fit_axis_data("oscillator_y_axis")
+
+            dpg.fit_axis_data("exciter_x_axis")
+            dpg.fit_axis_data("exciter_y_axis")
