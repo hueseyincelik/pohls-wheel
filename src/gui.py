@@ -12,6 +12,24 @@ class GUI:
         )
         dpg.setup_dearpygui()
 
+        with dpg.window(tag="main_window"):
+            for label, tag, pos, callback, visibility in zip(
+                ["CONNECT", "START", "STOP", "SAVE"],
+                ["connect_button", "start_button", "stop_button", "save_button"],
+                [[25, 450], [625, 450], [750, 450], [875, 450]],
+                [self.initialize, self.start, self.stop, self.save],
+                [True, False, False, False],
+            ):
+                dpg.add_button(
+                    label=label,
+                    tag=tag,
+                    width=100,
+                    height=50,
+                    pos=pos,
+                    callback=callback,
+                    show=visibility,
+                )
+
         dpg.set_primary_window("main_window", True)
         dpg.show_viewport()
 
