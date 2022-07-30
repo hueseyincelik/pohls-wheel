@@ -226,3 +226,25 @@ class GUI:
 
     def stop(self, sender, data):
         self.measure = False
+
+    def save(self, sender, data):
+        self.filename = (
+            dpg.get_value("file_name_input")
+            if dpg.get_value("file_name_input").lower().endswith(".txt")
+            else f"{dpg.get_value('file_name_input')}.txt"
+        )
+        self.data = np.column_stack(
+            (self.time_data, self.oscillator_data, self.exciter_data)
+        )
+        self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}MHz) [arb. u.]"
+
+        try:
+            np.savetxt(self.filename, self.data, delimiter="\t", header=self.header)
+        except:
+            self.popup_message(
+                "Saving Data", "Error saving data to disk!\nCheck file name!"
+            )
+        else:
+            self.popup_message(
+                "Saving Data", f"Successfully saved {self.filename} to disk!"
+            )
