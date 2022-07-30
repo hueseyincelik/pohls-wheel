@@ -16,3 +16,18 @@ class GUI:
             dpg.render_dearpygui_frame()
 
         dpg.destroy_context()
+
+    def popup_message(self, label, message):
+        with dpg.window(
+            label=label,
+            modal=True,
+            no_move=True,
+            no_close=True,
+            no_resize=True,
+            min_size=[200, 50],
+            pos=[350, 350],
+        ) as popup_window:
+            dpg.add_text(message)
+            dpg.add_button(
+                label="CLOSE", callback=lambda: dpg.delete_item(popup_window)
+            )
