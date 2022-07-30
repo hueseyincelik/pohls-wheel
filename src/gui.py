@@ -11,7 +11,7 @@ class GUI:
 		self.measure = False
 
 		dpg.create_context()
-		dpg.create_viewport(title='Themenkreis 7', width=1000, height=600, resizable=False)
+		dpg.create_viewport(title="Themenkreis 7 — Pohl's Wheel", width=1000, height=600, resizable=False)
 		dpg.setup_dearpygui()
 
 		with dpg.font_registry():
@@ -78,7 +78,8 @@ class GUI:
 			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz'], True)
 
 	def acquire(self):
-		self.time_data, self.oscillator_data, self.exciter_data, self.exciter_frequency = [], [], [], dpg.get_value('exciter_frequency_input')
+		self.time_data, self.oscillator_data, self.exciter_data= [], [], []
+		self.exciter_frequency = dpg.get_value('exciter_frequency_input')
 
 		# FIGURE OUT HOW TO ACTUALLY WRITE TO ARDUINO
 		# self.ardn.write(exciter_frequency)
@@ -90,8 +91,8 @@ class GUI:
 
 			self.time_data.append(current-start)
 			# FIGURE OUT HOW TO ACTUALLY READ FROM ARDUINO
-			# self.oscillator_data.append(current-start)
-			# self.exciter_data.append(current-start)
+			# self.oscillator_data.append()
+			# self.exciter_data.append()
 
 			dpg.set_value('oscillator_plot', [self.time_data, self.oscillator_data])
 			dpg.set_value('exciter_plot', [self.time_data, self.exciter_data])
