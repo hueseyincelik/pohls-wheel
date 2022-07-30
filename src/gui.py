@@ -13,6 +13,10 @@ class GUI:
 			for (label, tag, pos, callback, visibility) in zip(['CONNECT', 'START', 'STOP', 'SAVE'], ['connect_button', 'start_button', 'stop_button', 'save_button'], [[25,450], [625,450], [750,450], [875,450]], [self. initialize, self.start, self.stop, self.save], [True, False, False, False]):
 				dpg.add_button(label=label, tag=tag, width=100, height=50, pos=pos, callback=callback, show=visibility)
 
+			with dpg.group(horizontal=True):
+				dpg.add_text('COM', tag='com_text', pos=[25, 510])
+				dpg.add_input_text(tag='com_port_input', no_spaces=True, decimal=True, width=55, default_value='4')
+
 		dpg.set_primary_window('main_window', True)
 		dpg.show_viewport()
 
