@@ -76,7 +76,7 @@ class GUI:
                     default_value="0",
                     show=False,
                 )
-                dpg.add_text("MHz", tag="exciter_frequency_MHz", show=False)
+                dpg.add_text("mHz", tag="exciter_frequency_mHz", show=False)
 
             with dpg.plot(label="Oscillator", height=400, width=475, pos=[25, 25]):
                 dpg.add_plot_axis(
@@ -118,7 +118,7 @@ class GUI:
                 "file_name_input",
                 "exciter_frequency",
                 "exciter_frequency_input",
-                "exciter_frequency_MHz",
+                "exciter_frequency_mHz",
             ]:
                 dpg.bind_item_font(item, bold_font)
 
@@ -166,7 +166,7 @@ class GUI:
                     "file_name_input",
                     "exciter_frequency",
                     "exciter_frequency_input",
-                    "exciter_frequency_MHz",
+                    "exciter_frequency_mHz",
                 ],
                 False,
             )
@@ -183,7 +183,7 @@ class GUI:
                     "file_name_input",
                     "exciter_frequency",
                     "exciter_frequency_input",
-                    "exciter_frequency_MHz",
+                    "exciter_frequency_mHz",
                 ],
                 True,
             )
@@ -235,7 +235,7 @@ class GUI:
         self.data = np.column_stack(
             (self.time_data, self.oscillator_data, self.exciter_data)
         )
-        self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}MHz) [arb. u.]"
+        self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"
 
         try:
             np.savetxt(self.filename, self.data, delimiter="\t", header=self.header)
