@@ -31,7 +31,7 @@ class GUI:
 
 				dpg.add_text('EXCITER FREQUENCY', tag='exciter_frequency', pos=[625, 545], show=False)
 				dpg.add_input_text(tag='exciter_frequency_input', no_spaces=True, decimal=True, width=75, default_value='0', show=False)
-				dpg.add_text('MHz', tag='exciter_frequency_MHz', show=False)
+				dpg.add_text('mHz', tag='exciter_frequency_mHz', show=False)
 
 			with dpg.plot(label='Oscillator', height=400, width=475, pos=[25, 25]):
 				dpg.add_plot_axis(dpg.mvXAxis, label='Time t [s]', tag='oscillator_x_axis')
@@ -46,7 +46,7 @@ class GUI:
 			dpg.bind_font(default_font)
 			dpg.set_global_font_scale(0.25)
 
-			for item in ['connect_button', 'start_button', 'stop_button', 'save_button', 'com_text', 'com_port_input', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz']:
+			for item in ['connect_button', 'start_button', 'stop_button', 'save_button', 'com_text', 'com_port_input', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_mHz']:
 				dpg.bind_item_font(item, bold_font)
 
 		dpg.set_primary_window('main_window', True)
@@ -72,10 +72,10 @@ class GUI:
 			self.ardn = arduino(f"COM{self.com_port}")
 		except:
 			self.popup_message('Arduino Connection', 'Error connecting to Arduino!\nCheck COM port!')
-			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz'], False)
+			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_mHz'], False)
 		else:
 			self.popup_message('Arduino Connection', 'Successfully connected to Arduino!')
-			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_MHz'], True)
+			self.change_item_visibility(['start_button', 'stop_button', 'save_button', 'file_name', 'file_name_input', 'exciter_frequency', 'exciter_frequency_input', 'exciter_frequency_mHz'], True)
 
 	def acquire(self):
 		self.time_data, self.oscillator_data, self.exciter_data= [], [], []
@@ -118,7 +118,7 @@ class GUI:
 	def save(self, sender, data):
 		self.filename = dpg.get_value('file_name_input') if dpg.get_value('file_name_input').lower().endswith('.txt') else f"{dpg.get_value('file_name_input')}.txt"
 		self.data = np.column_stack((self.time_data, self.oscillator_data, self.exciter_data))
-		self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}MHz) [arb. u.]"
+		self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"
 
 		try:
 			np.savetxt(self.filename, self.data, delimiter='\t', header=self.header)
