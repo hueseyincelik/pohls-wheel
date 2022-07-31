@@ -3,7 +3,7 @@ A GUI front-end for undergraduate physics student at the [TU Berlin](https://www
 
 ![GUI](/docs/screenshot-gui.png)
 
-This is a reimplementation of the proprietary LabVIEW front-end, the source code of which has been lost.
+This is a reimplementation of the proprietary [LabVIEW front-end](/docs/labview-gui.png), the source code of which has been lost.
 
 ## Installation
 Install all required packages with pip using:
