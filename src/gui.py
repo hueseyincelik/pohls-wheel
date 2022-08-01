@@ -152,7 +152,7 @@ class GUI:
     def initialize(self, sender, data):
         try:
             self.com_port = dpg.get_value("com_port_input")
-            self.ardn = arduino(f"COM{self.com_port}")
+            self.ardn = arduino.Arduino(f"COM{self.com_port}")
         except:
             self.popup_message(
                 "Arduino Connection", "Error connecting to Arduino!\nCheck COM port!"
@@ -192,8 +192,7 @@ class GUI:
         self.time_data, self.oscillator_data, self.exciter_data = [], [], []
         self.exciter_frequency = dpg.get_value("exciter_frequency_input")
 
-        # FIGURE OUT HOW TO ACTUALLY WRITE TO ARDUINO
-        # self.ardn.write(exciter_frequency)
+        self.ardn.write(f"F{int(self.exciter_frequency)*1.744}\n")
         start = perf_counter()
 
         while self.measure:
@@ -202,8 +201,8 @@ class GUI:
 
             self.time_data.append(current - start)
             # FIGURE OUT HOW TO ACTUALLY READ FROM ARDUINO
-            # self.oscillator_data.append()
-            # self.exciter_data.append()
+            self.oscillator_data.append(1)
+            self.exciter_data.append(1)
 
             dpg.set_value("oscillator_plot", [self.time_data, self.oscillator_data])
             dpg.set_value("exciter_plot", [self.time_data, self.exciter_data])
