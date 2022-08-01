@@ -114,6 +114,9 @@ class GUI:
 
 	def stop(self, sender, data):
 		self.measure = False
+		self.ardn.write('F0\n')
+		self.acquire_thread.join()
+		del self.ardn
 
 	def save(self, sender, data):
 		self.filename = dpg.get_value('file_name_input') if dpg.get_value('file_name_input').lower().endswith('.txt') else f"{dpg.get_value('file_name_input')}.txt"
