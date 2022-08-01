@@ -218,9 +218,14 @@ class GUI:
 
     def start(self, sender, data):
         if self.measure:
-            self.measure = False
+            self.stop()
         else:
             self.measure = True
+
+            try:
+                self.ardn
+            except:
+                self.ardn = arduino.Arduino(f"COM{self.com_port}")
 
             acquire_thread = Thread(target=self.acquire)
             acquire_thread.start()
