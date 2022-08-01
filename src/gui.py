@@ -199,10 +199,13 @@ class GUI:
             sleep(0.01)
             current = perf_counter()
 
-            self.time_data.append(current - start)
-            # FIGURE OUT HOW TO ACTUALLY READ FROM ARDUINO
-            self.oscillator_data.append(1)
-            self.exciter_data.append(1)
+            _, oscillator_cur_val, exciter_cur_val = (
+                self.ardn.read().decode("UTF-8").rstrip("\n").split(",")
+            )
+
+            self.time_data.append(perf_counter() - start)
+            self.oscillator_data.append(oscillator_cur_val)
+            self.exciter_data.append(exciter_cur_val)
 
             dpg.set_value("oscillator_plot", [self.time_data, self.oscillator_data])
             dpg.set_value("exciter_plot", [self.time_data, self.exciter_data])
