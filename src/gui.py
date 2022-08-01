@@ -69,12 +69,13 @@ class GUI:
                     pos=[625, 545],
                     show=False,
                 )
-                dpg.add_input_text(
+                dpg.add_input_int(
                     tag="exciter_frequency_input",
-                    no_spaces=True,
-                    decimal=True,
                     width=75,
-                    default_value="0",
+                    default_value=0,
+                    min_value=0,
+                    step=0,
+                    min_clamped=True,
                     show=False,
                 )
                 dpg.add_text("mHz", tag="exciter_frequency_mHz", show=False)
@@ -193,7 +194,9 @@ class GUI:
         self.time_data, self.oscillator_data, self.exciter_data = [], [], []
         self.exciter_frequency = dpg.get_value("exciter_frequency_input")
 
-        self.ardn.write(f"F{int(self.exciter_frequency)*1.744}\n")
+        if self.exciter_frequency > 0:
+            self.ardn.write(f"F{self.exciter_frequency*1.744}\n")
+
         start = perf_counter()
 
         while self.measure:
