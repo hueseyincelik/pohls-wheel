@@ -9,6 +9,12 @@ class Arduino:
     def reconnect(self):
         self.arduino = Serial(port=self.port, baudrate=self.rate)
 
+    def status(self):
+        return self.arduino.isOpen()
+
+    def close(self):
+        self.arduino.close()
+
     def read(self):
         return self.arduino.readline()
 
