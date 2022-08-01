@@ -66,7 +66,7 @@ class GUI:
 			dpg.add_text(message)
 			dpg.add_button(label='CLOSE', callback=lambda: dpg.delete_item(popup_window))
 
-	def initialize(self, sender, data):
+	def initialize(self):
 		try:
 			self.com_port = dpg.get_value('com_port_input')
 			self.ardn = arduino.Arduino(f"COM{self.com_port}")
@@ -91,8 +91,8 @@ class GUI:
 			_, oscillator_cur_val, exciter_cur_val = self.ardn.read().decode('UTF-8').rstrip('\n').split(',')
 
 			self.time_data.append(perf_counter()-start)
-			self.oscillator_data.append(oscillator_cur_val)
-			self.exciter_data.append(exciter_cur_val)
+			self.oscillator_data.append(int(oscillator_cur_val))
+			self.exciter_data.append(int(exciter_cur_val))
 
 			dpg.set_value('oscillator_plot', [self.time_data, self.oscillator_data])
 			dpg.set_value('exciter_plot', [self.time_data, self.exciter_data])
@@ -103,7 +103,7 @@ class GUI:
 			dpg.fit_axis_data('exciter_x_axis')
 			dpg.fit_axis_data('exciter_y_axis')
 
-	def start(self, sender, data):
+	def start(self):
 		if self.measure:
 			self.stop()
 		else:
@@ -114,16 +114,16 @@ class GUI:
 			except:
 				self.ardn = arduino.Arduino(f"COM{self.com_port}")
 
-			acquire_thread = Thread(target=self.acquire)
-			acquire_thread.start()
+			self.acquire_thread = Thread(target=self.acquire)
+			self.acquire_thread.start()
 
-	def stop(self, sender, data):
+	def stop(self):
 		self.measure = False
 		self.ardn.write('F0\n')
 		self.acquire_thread.join()
 		del self.ardn
 
-	def save(self, sender, data):
+	def save(self):
 		self.filename = dpg.get_value('file_name_input') if dpg.get_value('file_name_input').lower().endswith('.txt') else f"{dpg.get_value('file_name_input')}.txt"
 		self.data = np.column_stack((self.time_data, self.oscillator_data, self.exciter_data))
 		self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"

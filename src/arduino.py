@@ -14,7 +14,7 @@ class Arduino:
 	def close(self):
 		self.arduino.close()
 
-	def read(self)::
+	def read(self):
 		return self.arduino.readline()
 
 	def write(self, value, encoding='UTF-8'):
