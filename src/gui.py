@@ -43,14 +43,15 @@ class GUI:
                     show=visibility,
                 )
 
+            dpg.configure_item(item="connect_button", width=200)
+
             with dpg.group(horizontal=True):
-                dpg.add_text("COM", tag="com_text", pos=[25, 510])
+                dpg.add_text("SERIAL PORT", tag="serial_port_text", pos=[25, 510])
                 dpg.add_input_text(
-                    tag="com_port_input",
+                    tag="serial_port_input",
                     no_spaces=True,
-                    decimal=True,
-                    width=55,
-                    default_value="4",
+                    width=91,
+                    default_value="COM4",
                 )
 
                 dpg.add_text("FILE NAME", tag="file_name", pos=[625, 510], show=False)
@@ -112,8 +113,8 @@ class GUI:
                 "start_button",
                 "stop_button",
                 "save_button",
-                "com_text",
-                "com_port_input",
+                "serial_port_text",
+                "serial_port_input",
                 "file_name",
                 "file_name_input",
                 "exciter_frequency",
@@ -151,11 +152,11 @@ class GUI:
 
     def initialize(self):
         try:
-            self.com_port = dpg.get_value("com_port_input")
-            self.ardn = arduino.Arduino(f"COM{self.com_port}")
+            self.serial_port = dpg.get_value("serial_port_input")
+            self.ardn = arduino.Arduino(self.serial_port)
         except:
             self.popup_message(
-                "Arduino Connection", "Error connecting to Arduino!\nCheck COM port!"
+                "Arduino Connection", "Error connecting to Arduino!\nCheck serial port!"
             )
             self.change_item_visibility(
                 [
@@ -225,7 +226,7 @@ class GUI:
             try:
                 self.ardn
             except:
-                self.ardn = arduino.Arduino(f"COM{self.com_port}")
+                self.ardn = arduino.Arduino(self.serial_port)
 
             self.acquire_thread = Thread(target=self.acquire)
             self.acquire_thread.start()
