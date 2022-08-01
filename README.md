@@ -12,9 +12,7 @@ pip3 install -r requirements.txt
 ```
 
 ## Usage
-This project is currently **work in progress**, as different functions — such as reading/writing from/to the Arduino — are not/partially implemented.
-
-If you want to test the program anyway, simply run [main.py](/main.py) by calling:
+The program can be started by simply running [main.py](/main.py):
 ```
 python3 main.py
 ```
