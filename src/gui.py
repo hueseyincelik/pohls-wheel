@@ -10,6 +10,7 @@ from . import arduino
 class GUI:
     def __init__(self):
         self.time_data, self.oscillator_data, self.exciter_data = [], [], []
+        self.exciter_frequency = 0
         self.measure = False
 
         dpg.create_context()
