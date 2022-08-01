@@ -227,6 +227,9 @@ class GUI:
 
     def stop(self, sender, data):
         self.measure = False
+        self.ardn.write("F0\n")
+        self.acquire_thread.join()
+        del self.ardn
 
     def save(self, sender, data):
         self.filename = (
