@@ -144,7 +144,7 @@ class GUI:
             no_close=True,
             no_resize=True,
             min_size=[200, 50],
-            pos=[350, 350],
+            pos=[400, 250],
         ) as popup_window:
             dpg.add_text(message)
             dpg.add_button(
