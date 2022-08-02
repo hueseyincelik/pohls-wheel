@@ -198,14 +198,14 @@ class GUI:
         if self.exciter_frequency > 0:
             self.ardn.write(f"F{self.exciter_frequency*1.744}\n")
 
-        start = perf_counter()
+        timer = perf_counter()
 
         while self.measure:
             _, oscillator_cur_val, exciter_cur_val = (
                 self.ardn.read().decode("UTF-8").rstrip("\n").split(",")
             )
 
-            self.time_data.append(perf_counter() - start)
+            self.time_data.append(perf_counter() - timer)
             self.oscillator_data.append(int(oscillator_cur_val))
             self.exciter_data.append(int(exciter_cur_val))
 
@@ -222,13 +222,12 @@ class GUI:
         if self.measure:
             self.stop()
         else:
-            self.measure = True
-
             try:
                 self.ardn
             except:
                 self.ardn = arduino.Arduino(self.serial_port)
 
+            self.measure = True
             self.acquire_thread = Thread(target=self.acquire)
             self.acquire_thread.start()
 
@@ -236,9 +235,13 @@ class GUI:
         self.measure = False
         self.ardn.write("F0\n")
         self.acquire_thread.join()
+
         del self.ardn
 
     def save(self):
+        if self.measure:
+            self.stop()
+
         self.filename = (
             dpg.get_value("file_name_input")
             if dpg.get_value("file_name_input").lower().endswith(".txt")
