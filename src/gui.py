@@ -90,9 +90,6 @@ class GUI:
 		start = perf_counter()
 
 		while self.measure:
-			sleep(0.01)
-			current = perf_counter()
-
 			_, oscillator_cur_val, exciter_cur_val = self.ardn.read().decode('UTF-8').rstrip('\n').split(',')
 
 			self.time_data.append(perf_counter()-start)
