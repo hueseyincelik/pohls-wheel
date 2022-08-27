@@ -1,5 +1,6 @@
-from time import perf_counter, sleep
+from time import perf_counter
 from threading import Thread
+from pathlib import Path
 
 import dearpygui.dearpygui as dpg
 from . import arduino
@@ -138,4 +139,4 @@ class GUI:
 		except:
 			self.popup_message('Saving Data', 'Error saving data to disk!\nCheck file name!')
 		else:
-			self.popup_message('Saving Data', f"Successfully saved {self.filename} to disk!")
+			self.popup_message('Saving Data', f"Successfully saved {Path(self.filename).name} to disk!")
