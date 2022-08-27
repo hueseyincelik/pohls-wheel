@@ -1,5 +1,6 @@
+from pathlib import Path
 from threading import Thread
-from time import perf_counter, sleep
+from time import perf_counter
 
 import dearpygui.dearpygui as dpg
 import numpy as np
@@ -260,5 +261,5 @@ class GUI:
             )
         else:
             self.popup_message(
-                "Saving Data", f"Successfully saved {self.filename} to disk!"
+                "Saving Data", f"Successfully saved {Path(self.filename).name} to disk!"
             )
