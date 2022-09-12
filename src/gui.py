@@ -202,22 +202,29 @@ class GUI:
         timer = perf_counter()
 
         while self.measure:
-            _, oscillator_cur_val, exciter_cur_val = (
-                self.ardn.read().decode("UTF-8").rstrip("\n").split(",")
-            )
+            try:
+                _, oscillator_cur_val, exciter_cur_val = (
+                    self.ardn.read().decode("UTF-8").rstrip("\n").split(",")
+                )
+            except:
+                self.stop(join=False)
+                self.popup_message(
+                    "Arduino Connection",
+                    "Error: not enough values to unpack (expected 3)!\nTry restarting the Arduino!",
+                )
+            else:
+                self.time_data.append(perf_counter() - timer)
+                self.oscillator_data.append(int(oscillator_cur_val))
+                self.exciter_data.append(int(exciter_cur_val))
 
-            self.time_data.append(perf_counter() - timer)
-            self.oscillator_data.append(int(oscillator_cur_val))
-            self.exciter_data.append(int(exciter_cur_val))
+                dpg.set_value("oscillator_plot", [self.time_data, self.oscillator_data])
+                dpg.set_value("exciter_plot", [self.time_data, self.exciter_data])
 
-            dpg.set_value("oscillator_plot", [self.time_data, self.oscillator_data])
-            dpg.set_value("exciter_plot", [self.time_data, self.exciter_data])
+                dpg.fit_axis_data("oscillator_x_axis")
+                dpg.fit_axis_data("oscillator_y_axis")
 
-            dpg.fit_axis_data("oscillator_x_axis")
-            dpg.fit_axis_data("oscillator_y_axis")
-
-            dpg.fit_axis_data("exciter_x_axis")
-            dpg.fit_axis_data("exciter_y_axis")
+                dpg.fit_axis_data("exciter_x_axis")
+                dpg.fit_axis_data("exciter_y_axis")
 
     def start(self):
         if self.measure:
@@ -232,10 +239,12 @@ class GUI:
             self.acquire_thread = Thread(target=self.acquire)
             self.acquire_thread.start()
 
-    def stop(self):
+    def stop(self, join=True):
         self.measure = False
         self.ardn.write("F0\n")
-        self.acquire_thread.join()
+
+        if join:
+            self.acquire_thread.join()
 
         del self.ardn
 
