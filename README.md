@@ -10,6 +10,12 @@ Install all required packages with pip using:
 ```
 pip3 install -r requirements.txt
 ```
+The current experimental setups require the source files to be in the home directory, which can be achieved by running the following commands in the terminal:
+```bash
+git clone https://www.github.com/hueseyincelik/pohls-wheel.git
+mv pohls-wheel/src/ pohls-wheel/fonts/ pohls-wheel/main.py $HOME/
+rm -rf pohls-wheel/ # optional deletion of leftover files
+```
 
 ## Usage
 The program can be started by simply running [main.py](/main.py):
