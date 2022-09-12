@@ -27,11 +27,11 @@ class GUI:
 			dpg.configure_item(item='connect_button', width=200)
 
 			with dpg.group(horizontal=True):
-				dpg.add_text('SERIAL PORT', tag='serial_port_text', pos=[25, 510])
-				dpg.add_input_text(tag='serial_port_input', no_spaces=True, width=91, default_value='COM4')
+				dpg.add_text('PORT', tag='serial_port_text', pos=[25, 510])
+				dpg.add_input_text(tag='serial_port_input', no_spaces=True, width=150, default_value='/dev/ttyACM0')
 
 				dpg.add_text('FILE NAME', tag='file_name', pos=[625, 510], show=False)
-				dpg.add_input_text(tag='file_name_input', no_spaces=True, width=260, default_value='data.txt', show=False)
+				dpg.add_input_text(tag='file_name_input', no_spaces=True, width=260, default_value='Desktop/data.txt', show=False)
 
 				dpg.add_text('EXCITER FREQUENCY', tag='exciter_frequency', pos=[625, 545], show=False)
 				dpg.add_input_int(tag='exciter_frequency_input', width=75, default_value=0, min_value=0, step=0, min_clamped=True, show=False)
