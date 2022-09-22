@@ -3,7 +3,7 @@ A GUI front-end for undergraduate physics student at the [TU Berlin](https://www
 
 ![GUI](/docs/screenshot-gui.png)
 
-This is a reimplementation of the proprietary [LabVIEW front-end](/docs/labview-gui.png), the source code of which has been lost.
+This is a reimplementation of the proprietary [LabVIEW front-end](/docs/labview-gui.png), the source code of which has been lost. Instructions for carrying out the experiment are provided in the corresponding german [manual](/docs/tk7-skript-wise22-23.pdf).
 
 ## Installation
 Install all required packages with pip using:
@@ -18,7 +18,7 @@ rm -rf pohls-wheel/ # optional deletion of leftover files
 ```
 
 ## Usage
-The program can be started by simply running [main.py](/main.py):
+The program can be started by simply running [`main.py`](/main.py):
 ```
 python3 main.py
 ```
