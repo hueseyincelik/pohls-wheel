@@ -21,7 +21,7 @@ class GUI:
 			bold_font = dpg.add_font('fonts/HelveticaNeue-Bold.otf', 18*4)
 
 		with dpg.window(tag='main_window'):
-			for (label, tag, pos, callback, visibility) in zip(['CONNECT', 'START', 'STOP', 'SAVE'], ['connect_button', 'start_button', 'stop_button', 'save_button'], [[25,450], [625,450], [750,450], [875,450]], [self. initialize, self.start, self.stop, self.save], [True, False, False, False]):
+			for (label, tag, pos, callback, visibility) in zip(['CONNECT', 'START', 'STOP', 'SAVE'], ['connect_button', 'start_button', 'stop_button', 'save_button'], [[25,450], [625,450], [750,450], [875,450]], [self.initialize, self.start, self.stop, self.save], [True, False, False, False]):
 				dpg.add_button(label=label, tag=tag, width=100, height=50, pos=pos, callback=callback, show=visibility)
 
 			dpg.configure_item(item='connect_button', width=200)
@@ -136,8 +136,8 @@ class GUI:
 		if self.measure:
 			self.stop()
 
-		self.filename = dpg.get_value('file_name_input') if dpg.get_value('file_name_input').lower().endswith('.txt') else f"{dpg.get_value('file_name_input')}.txt"
 		self.data = np.column_stack((self.time_data, self.oscillator_data, self.exciter_data))
+		self.filename = f"{dpg.get_value('file_name_input')}{'.txt' if not dpg.get_value('file_name_input').lower().endswith('.txt') else ''}"
 		self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"
 
 		try:
