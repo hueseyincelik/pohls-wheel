@@ -252,14 +252,10 @@ class GUI:
         if self.measure:
             self.stop()
 
-        self.filename = (
-            dpg.get_value("file_name_input")
-            if dpg.get_value("file_name_input").lower().endswith(".txt")
-            else f"{dpg.get_value('file_name_input')}.txt"
-        )
         self.data = np.column_stack(
             (self.time_data, self.oscillator_data, self.exciter_data)
         )
+        self.filename = f"{dpg.get_value('file_name_input')}{'.txt' if not dpg.get_value('file_name_input').lower().endswith('.txt') else ''}"
         self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"
 
         try:
