@@ -41,13 +41,13 @@
   \item Bei Wechsel der Erregerfrequenz den Einschwingvorgang beachten.
 \end{itemize}
 \section*{Software}
-Die Software zur Ansteuerung des Arduinos und Messung des Erregers und Oszillators wurde in \textsc{python} vollständig neu geschrieben.\footnote{Fehlermeldungen, Anmerkungen, Verbesserungsvorschläge etc. zur Software können entweder auf GitHub unter \href{https://www.github.com/hueseyincelik/pohls-wheel}{\nolinkurl{github.com/hueseyincelik/pohls-wheel}} oder per E-Mail unter \href{mailto:celik@tu-berlin.de}{\nolinkurl{celik@tu-berlin.de}} eingereicht werden.}
+Die Software zur Ansteuerung des Arduinos und Messung des Erregers und Oszillators wurde in \textsc{python} neu geschrieben.
 
-Das Programm wird über die Schreibtischverknüpfung \enquote{TK7} gestartet. Das Konsolenfenster, welches sich im Hintergrund öffnet, sollte nicht geschlossen werden, kann aber ignoriert bzw. minimiert werden. Nach dem Programmstart ist in der Benutzeroberfläche nur der \enquote{CONNECT} Knopf sowie die Eingabe zum Serial Port zu sehen. Der standardmäßig eingestellte Port von \texttt{/dev/ttyACM0} sollte bei ordnungsgemäßer USB-Verbindung zu einer erfolgreichen Verbindung führen. Falls die Verbindung dennoch fehlschlägt, können die Ports \texttt{/dev/ttyACM1}, \texttt{/dev/ttyACM2} usw. durchprobiert werden. Schlägt die Verbindung weiterhin fehl, kann über die Konsole mithilfe des Befehls \texttt{ls /dev/tty*} eine Liste mit allen verfügbaren Ports ausgegeben werden, unter der sich auch der Arduino befinden sollte.
+Das Programm wird über die Schreibtischverknüpfung \enquote{TK7} gestartet. Das Konsolenfenster, welches sich im Hintergrund öffnet, sollte nicht geschlossen werden, kann aber ignoriert bzw. minimiert werden. Nach dem Programmstart ist in der Benutzeroberfläche nur der \enquote{CONNECT} Knopf sowie die Dropdown-Liste für den Serial Port zu sehen. Hier sollte aus der Liste der zum Arduino zugehörige COM-Port ausgewählt werden.
 
 Nach erfolgreicher Verbindung mit dem Arduino werden in der Benutzeroberfläche die Knöpfe \enquote{START}, \enquote{STOP} und \enquote{SAVE} sowie die Eingabe für den Dateinamen und die Erregerfrequenz freigegeben (siehe \cref{fig:gui}).
 
-Bei dem Dateinamen sollte beachtet werden, dass der Pfad relativ zum Homeverzeichnis des aktuellen Benutzers \enquote{student} angegeben wird. Soll die Datei auf dem Schreibtisch in einem Unterordner gespeichert werden, so muss dieser zuerst angelegt, und anschließend der Dateipfad in der Benutzeroberfläche ergänzt werden. \textbf{Vorhandene Dateien werden ohne zu fragen überschrieben!}
+Bei dem Dateinamen sollte beachtet werden, dass es sich um einen absoluten Dateipfad handelt. Soll die Datei auf dem Schreibtisch in einem Unterordner gespeichert werden, so muss dieser zuerst angelegt, und anschließend der Dateipfad in der Benutzeroberfläche ergänzt werden. \textbf{Vorhandene Dateien werden ohne zu fragen überschrieben!}
 
 Die Messung kann mit der aktuell eingestellten Erregerfrequenz über den \enquote{START} Knopf gestartet und den \enquote{STOP} Knopf beendet werden. Wird bei laufender Messung der \enquote{START} Knopf gedrückt, so wird die Messung zunächst beendet, und bei erneutem Drücken neu gestartet. Wird bei laufender Messung der \enquote{SAVE} Knopf gedrückt, so wird die Messung beendet und die Messung mit dem angegebenen Dateinamen abgespeichert.
 \begin{figure}[H]
@@ -61,8 +61,4 @@ Gelegentlich bricht die Messung nach kurzer Zeit mit der Fehlermeldung
 \hspace{1em} \enquote{Error: not enough values to unpack (expected 3)! Try restarting the Arduino!}
 
 ab. Hier muss das Programm geschlossen, und der Arduino über das Ein- und Ausstecken der Stromzufuhr neu gestartet werden.
-\section*{7.1 Gedämpfte Schwingung (1/2)}
-Der Versuch ist zunächst wie im Buch durchzuführen. Werte, die für die Dämpfung beispielsweise eingestellt werden können, sind: \SI{0.5}{\ampere}, \SI{0.75}{\ampere}, \SI{1}{\ampere}, \SI{1.5}{\ampere}.
-\subsection*{Aperiodischer Grenzfall \textemdash{} Nur zusammen mit Tutor durchführen}
-Der aperiodische Grenzfall tritt bei den Rädern bei Strömen im Bereich von ca. \SIrange{2}{2.5}{\ampere} auf. Da die Spulen diesen Strom aber nicht dauerhaft aushalten, ist dieser Teilversuch zügig und zusammen mit dem Tutor durchzuführen. Dazu wird ein stärkeres Netzteil mit der Aufschrift: \enquote{Nur für aperiodischer Grenzfall bestimmt} verwendet. Dieses ähnelt den kleinen Netzteilen, verfügt aber über einen separaten Schalter zum aktivieren der Ausgangsspannung.
 \end{document}

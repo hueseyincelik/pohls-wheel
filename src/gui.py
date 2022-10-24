@@ -1,9 +1,11 @@
+import os
 from pathlib import Path
 from threading import Thread
 from time import perf_counter
 
 import dearpygui.dearpygui as dpg
 import numpy as np
+from serial.tools import list_ports
 
 from . import arduino
 
@@ -13,6 +15,19 @@ class GUI:
         self.time_data, self.oscillator_data, self.exciter_data = [], [], []
         self.exciter_frequency = 0
         self.measure = False
+
+        self.save_path = os.path.normpath(os.path.expanduser("~/Desktop"))
+        self.comports = np.array(
+            list(
+                map(
+                    np.array,
+                    [
+                        (f"{port.device} ({port.description})", port.device)
+                        for port in list_ports.comports()
+                    ],
+                )
+            )
+        )
 
         dpg.create_context()
         dpg.create_viewport(
@@ -49,11 +64,11 @@ class GUI:
 
             with dpg.group(horizontal=True):
                 dpg.add_text("PORT", tag="serial_port_text", pos=[25, 510])
-                dpg.add_input_text(
-                    tag="serial_port_input",
-                    no_spaces=True,
+                dpg.add_combo(
+                    self.comports[..., 0].tolist(),
+                    tag="serial_port_combo",
                     width=150,
-                    default_value="/dev/ttyACM0",
+                    default_value=self.comports[0][0],
                 )
 
                 dpg.add_text("FILE NAME", tag="file_name", pos=[625, 510], show=False)
@@ -61,7 +76,7 @@ class GUI:
                     tag="file_name_input",
                     no_spaces=True,
                     width=260,
-                    default_value="Desktop/data.txt",
+                    default_value=f"{self.save_path}/data.txt",
                     show=False,
                 )
 
@@ -78,9 +93,12 @@ class GUI:
                     min_value=0,
                     step=0,
                     min_clamped=True,
+                    pos=[800, 545],
                     show=False,
                 )
-                dpg.add_text("mHz", tag="exciter_frequency_mHz", show=False)
+                dpg.add_text(
+                    "mHz", tag="exciter_frequency_mHz", pos=[880, 545], show=False
+                )
 
             with dpg.plot(label="Oscillator", height=400, width=475, pos=[25, 25]):
                 dpg.add_plot_axis(
@@ -117,7 +135,7 @@ class GUI:
                 "stop_button",
                 "save_button",
                 "serial_port_text",
-                "serial_port_input",
+                "serial_port_combo",
                 "file_name",
                 "file_name_input",
                 "exciter_frequency",
@@ -155,7 +173,12 @@ class GUI:
 
     def initialize(self):
         try:
-            self.serial_port = dpg.get_value("serial_port_input")
+            self.serial_port = self.comports[
+                np.argwhere(
+                    self.comports[..., 0] == dpg.get_value("serial_port_combo")
+                )[0][0],
+                1,
+            ]
             self.ardn = arduino.Arduino(self.serial_port)
         except:
             self.popup_message(
@@ -255,8 +278,19 @@ class GUI:
         self.data = np.column_stack(
             (self.time_data, self.oscillator_data, self.exciter_data)
         )
-        self.filename = f"{dpg.get_value('file_name_input')}{'.txt' if not dpg.get_value('file_name_input').lower().endswith('.txt') else ''}"
-        self.header = f"Time t [s]\tAmplitude A (Oscillator) [arb. u.]\tAmplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"
+
+        file_extension = (
+            ".txt"
+            if not dpg.get_value("file_name_input").lower().endswith(".txt")
+            else ""
+        )
+
+        self.filename = f"{dpg.get_value('file_name_input')}{file_extension}"
+        self.header = (
+            f"Time t [s]\t"
+            f"Amplitude A (Oscillator) [arb. u.]\t"
+            f"Amplitude A (Exciter: {self.exciter_frequency}mHz) [arb. u.]"
+        )
 
         try:
             np.savetxt(self.filename, self.data, delimiter="\t", header=self.header)
